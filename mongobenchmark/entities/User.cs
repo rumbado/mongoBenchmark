@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
+using MongoDB.Entities;
 
 namespace mongobenchmark.entities;
-public class User
+public class User : Entity
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public ObjectId Id { get; set; }
     public string? Name { get; set; }
     public string? Email { get; set; }
     public string? Address { get; set; }

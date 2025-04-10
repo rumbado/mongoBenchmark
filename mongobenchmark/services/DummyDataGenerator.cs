@@ -19,9 +19,11 @@ public class DummyDataGenerator(IMongoClient mongoClient)
         for (int i = 0; i < count; i++)
         {
             await collection.InsertOneAsync(CreateRandomUser());
+            Console.WriteLine($"Inserted user {i + 1} of {count}");
 
             if (cancellationToken.IsCancellationRequested)
             {
+                Console.WriteLine("Operation cancelled.");
                 break;
             }
         }

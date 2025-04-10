@@ -1,17 +1,29 @@
 {
-    "name": "Mongo Benchmark",
-    "build": {
-      "dockerfile": "Dockerfile"
-    },
-    "runArgs": ["--init"],
-    "forwardPorts": [27017],
-    "postCreateCommand": "dotnet restore",
-    "customizations": {
-      "vscode": {
-        "extensions": [
-          "ms-dotnettools.csharp"
-        ]
+  "name": "Mongo Benchmark",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": [
+    "--init"
+  ],
+  "forwardPorts": [
+    27017
+  ],
+  "postCreateCommand": "dotnet restore",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "mongodb.mongodb-vscode",
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "ms-dotnettools.vscodeintellicode-csharp"
+      ],
+      "settings": {
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": true
       }
     }
   }
-  
+}
