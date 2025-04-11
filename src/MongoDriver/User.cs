@@ -1,16 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Driver;
 
-namespace mongobenchmark.entities;
+namespace mongobenchmark.MongoDriver;
+
 public class User
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
     public ObjectId Id { get; set; }
     public string? Name { get; set; }
     public string? Email { get; set; }

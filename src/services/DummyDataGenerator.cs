@@ -1,16 +1,21 @@
 using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using mongobenchmark.entities;
 using Bogus;
 using System.Threading;
 using System.Threading.Tasks;
+using mongobenchmark.MongoDriver;
 
 namespace mongobenchmark.services;
-public class DummyDataGenerator(IMongoClient mongoClient)
+public class DummyDataGenerator
 {
-    private readonly IMongoDatabase _mongoDatabase = mongoClient.GetDatabase("benchdb");
+    private readonly IMongoDatabase _mongoDatabase;
+
+    public DummyDataGenerator()
+    {
+        // Setup connection to MongoDB
+        var client = new MongoClient("mongodb://localhost:27017");
+        _mongoDatabase = client.GetDatabase("benchdb");
+    }
 
     public async Task GenerateDummyUsers(int count, CancellationToken cancellationToken)
     {
@@ -19,15 +24,17 @@ public class DummyDataGenerator(IMongoClient mongoClient)
         for (int i = 0; i < count; i++)
         {
             await collection.InsertOneAsync(CreateRandomUser());
+            Console.WriteLine($"Inserted user {i + 1} of {count}");
 
             if (cancellationToken.IsCancellationRequested)
             {
+                Console.WriteLine("Operation cancelled.");
                 break;
             }
         }
     }
 
-    private User CreateRandomUser()
+    private static User CreateRandomUser()
     {
         // User Bogus to create a random user
         var faker = new Faker<User>();
