@@ -4,19 +4,21 @@
     "dockerfile": "Dockerfile"
   },
   "runArgs": [
-    "--init"
+    "--init",
+    "--cap-add=SYS_PTRACE",
+    "--security-opt",
+    "seccomp=unconfined"
   ],
   "forwardPorts": [
     27017
   ],
-  "postCreateCommand": "dotnet restore",
+  "postCreateCommand": "docker start mongo || docker run -d --name mongo -p 27017:27017 mongo",
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-dotnettools.csharp",
         "mongodb.mongodb-vscode",
         "ms-dotnettools.csdevkit",
-        "ms-dotnettools.csharp",
         "ms-dotnettools.vscode-dotnet-runtime",
         "ms-dotnettools.vscodeintellicode-csharp"
       ],
@@ -25,5 +27,8 @@
         "editor.formatOnSave": true
       }
     }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   }
 }
