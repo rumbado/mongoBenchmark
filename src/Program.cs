@@ -8,6 +8,7 @@ using mongobenchmark.MongoEntities;
 using mongobenchmark.services;
 using System.Threading;
 using BenchmarkDotNet.Running;
+using BenchmarkDotNet.Configs;
 
 class Program
 {
@@ -30,7 +31,7 @@ class Program
         if (args.Length == 0)
         {
             Console.WriteLine("No input provided.");
-            return;
+            args = ["Benchmark"];
         }
 
         var action = args[0].ToLowerInvariant();
@@ -51,13 +52,12 @@ class Program
                 break;
 
             case "benchmark":
-                // Run benchmark
+                //Run benchmark
                 BenchmarkRunner.Run([
                     typeof(MongoDriverBenchmark),
                     typeof(MongoFrameworkBenchmark),
                     typeof(MongoEntitiesBenchmark)
                 ]);
-
                 break;
 
             default:

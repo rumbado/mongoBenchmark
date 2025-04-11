@@ -2,6 +2,8 @@ using System;
 using MongoDB.Entities;
 
 namespace mongobenchmark.MongoEntities;
+
+[Collection("users")]
 public class User : Entity
 {
     public string? Name { get; set; }

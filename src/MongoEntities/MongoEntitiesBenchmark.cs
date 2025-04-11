@@ -9,17 +9,28 @@ namespace mongobenchmark.MongoEntities;
 public class MongoEntitiesBenchmark: MongoBenchmarkBase
 {
     [GlobalSetup]
-    public async Task Setup()
+    public void Setup()
     {
         // Setup connection to MongoDB
-        await DB.InitAsync("benchdb", "localhost");
+        DB.InitAsync("benchdb", "localhost").GetAwaiter().GetResult();
 
-        await SetupBase();
+        SetupBase().GetAwaiter().GetResult();
     }
 
     [Benchmark()]
     public async Task GetByObjectId()
     {
         await DB.Find<User>().OneAsync(_existingId.ToString());
+    }
+
+    [Benchmark()]
+    public async Task GetByText()
+    {
+        var user = await DB.Find<User>().Match(x => x.Eq(u => u.Name, _existingName)).ExecuteFirstAsync();
+
+        if (user == null || user.Name != _existingName)
+        {
+            throw new Exception("User not found");
+        }
     }
 }

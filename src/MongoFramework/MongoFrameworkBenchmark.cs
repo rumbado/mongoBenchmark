@@ -1,7 +1,9 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
-using mongobenchmark.services;  
+using mongobenchmark.services;
+using MongoDB.Bson;
 using MongoFramework;
 using MongoFramework.Linq;
 
@@ -27,7 +29,18 @@ public class MongoFrameworkBenchmark: MongoBenchmarkBase
     [Benchmark()]
     public async Task GetByObjectId()
     {
-        await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == _existingId);
+        await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == ObjectId.Parse(_existingId));
+    }
+
+    [Benchmark()]
+    public async Task GetByText()
+    {
+        var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Name == _existingName);
+
+        if (user == null || user.Name != _existingName)
+        {
+            throw new Exception("User not found");
+        }
     }
 }
 

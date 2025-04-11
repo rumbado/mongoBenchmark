@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
@@ -30,5 +31,20 @@ public class MongoDriverBenchmark: MongoBenchmarkBase
 
         await _database.GetCollection<User>("users")
             .Find(filter).SingleOrDefaultAsync();
+    }
+
+    [Benchmark()]
+    public async Task GetByText()
+    {
+        var filter = Builders<User>.Filter.Eq(u => u.Name, _existingName);
+
+        var user = await _database.GetCollection<User>("users")
+            .Find(filter).SingleOrDefaultAsync();
+
+            
+        if (user == null || user.Name != _existingName)
+        {
+            throw new Exception("User not found");
+        }
     }
 }
